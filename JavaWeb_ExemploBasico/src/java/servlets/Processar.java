@@ -33,9 +33,11 @@ public class Processar extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // obtenção dos dados da requisição
         String texto = request.getParameter("texto");
         String numero = request.getParameter("numero");
         
+        // Verificação de campo requerido: texto
         if (texto == null || "".equals(texto.trim())) {
             request.setAttribute("textoRequerido", "Texto é obrigatório");
             
@@ -44,6 +46,7 @@ public class Processar extends HttpServlet {
             return;
         }
 
+        // Verificação de campo requerido: numero
         if (numero == null || "".equals(numero.trim())) {
             request.setAttribute("numeroRequerido", "Número é obrigatório");
             
@@ -52,6 +55,7 @@ public class Processar extends HttpServlet {
             return;
         }
         
+        // conversão do número de String para inteiro
         int nr = 0;
         try {
             nr = Integer.parseInt(numero);
@@ -64,13 +68,18 @@ public class Processar extends HttpServlet {
             return;
         }
         
-        ////// Efetivo processamento dos dados
-        nr = nr * nr;
-        texto = texto.toUpperCase();
-        /////
+        
+        ////////// Efetivo processamento dos dados
+        
+        int    resultado   = nr * nr;
+        String maiusculo   = texto.toUpperCase();
+        
+        ///////////////////////////////////////////
 
-        request.setAttribute("texto", texto);
-        request.setAttribute("numero", String.valueOf(nr));
+        
+        // Redirecionamento para apresentar o resultado
+        request.setAttribute("texto", maiusculo);
+        request.setAttribute("numero", resultado);
         RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
         
